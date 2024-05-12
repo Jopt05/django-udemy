@@ -1,7 +1,7 @@
 from django.db import models
 
 from applications.autor.models import Autor
-from .managers import LibroManager
+from .managers import LibroManager, CategoriaManager
 # Create your models here.
 
 class Categoria(models.Model):
@@ -9,13 +9,16 @@ class Categoria(models.Model):
         max_length=30
     )
 
+    objects = CategoriaManager()
+
     def __str__(self):
         return self.nombre
     
 class Libro(models.Model):
     categoria = models.ForeignKey(
         Categoria,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='categoria_libro'
     )
     autores = models.ManyToManyField(Autor)
     titulo = models.CharField(

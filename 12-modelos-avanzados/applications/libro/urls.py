@@ -9,4 +9,9 @@ urlpatterns = [
         views.ListLibros.as_view(), 
         name="libros"
         ),
+    path(
+        'libros/categoria', 
+        views.ListLibrosCategoria.as_view(), 
+        name="libros"
+        ),
 ]

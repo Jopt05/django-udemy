@@ -13,3 +13,12 @@ class ListLibros(ListView):
         if fecha1 and fecha2:
             return Libro.objects.filtrar_fecha(fecha1, fecha2)
         return Libro.objects.listar_libros()
+    
+class ListLibrosCategoria(ListView):
+    model = Libro
+    context_object_name = 'lista_libros'
+    template_name = 'libro/listaCategoria.html'
+
+    def get_queryset(self):
+        # parametro = self.request.GET.get('categoria_id')
+        return Libro.objects.listar_libros_categoria('2')

@@ -15,3 +15,19 @@ class LibroManager(models.Manager):
             # fecha__range=['2023-01-01', '2024-01-01']
         )
         return resultado
+    
+    def listar_libros_categoria(self, id_categoria):
+        return self.filter(
+            # Esto es un id
+            categoria__id=id_categoria
+        ).order_by(
+            'titulo'
+        )
+    
+class CategoriaManager(models.Manager):
+
+    def categoria_por_autor(self, autor_id):
+        return self.filter(
+            categoria_libro__autores__id=autor_id  
+            # Quiero consultas que no se repitan
+        ).distinct()
