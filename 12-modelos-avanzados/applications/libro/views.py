@@ -1,4 +1,4 @@
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from .models import Libro
 
@@ -22,3 +22,8 @@ class ListLibrosCategoria(ListView):
     def get_queryset(self):
         # parametro = self.request.GET.get('categoria_id')
         return Libro.objects.listar_libros_categoria('2')
+    
+class LibroDetailView(DetailView):
+    model = Libro
+    template_name = "libro/detalle.html"
+    context_object_name = "libro"

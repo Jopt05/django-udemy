@@ -1,20 +1,12 @@
 from django.db import models
 
 from applications.libro.models import Libro
+from applications.autor.models import Persona
+from .managers import PrestamoManager
 
 # Create your models here.
 
-class Lector(models.Model):
-    nombres = models.CharField(
-        max_length=50
-    )
-    appellidos = models.CharField(
-        max_length=50
-    )
-    nacionalidad = models.CharField(
-        max_length=20
-    )
-    edad = models.PositiveIntegerField(default=0)
+class Lector(Persona):
 
     def __str__(self):
         return self.nombres
@@ -26,7 +18,8 @@ class Prestamo(models.Model):
     )
     libro = models.ForeignKey(
         Libro,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='libro_prestamo'
     )
     fecha_prestamo = models.DateField()
     fecha_devolucion = models.DateField(
@@ -34,6 +27,13 @@ class Prestamo(models.Model):
         null=True
     )
     devuelto = models.BooleanField()
+
+    def save(self, *args, **kwargs):
+        self.libro.stock = self.libro.stock - 1
+        self.libro.save()
+        super(Prestamo, self).save(*args, **kwargs)
+
+    objects = PrestamoManager()
 
     def __str__(self) -> str:
         return self.libro.titulo
